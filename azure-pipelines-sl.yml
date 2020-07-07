@@ -1,6 +1,7 @@
 trigger:
 - master
 - develop
+- feature/*
 
 pool:
   vmImage: 'ubuntu-latest'
@@ -23,7 +24,7 @@ steps:
       -e "BRANCH=$(Build.SourceBranch)" \
       -v "$(Build.SourcesDirectory):/app:cached" \
       -v "$(Build.ArtifactStagingDirectory):/reports:cached" \
-      shiftleft/scan:mp scan --src /app \
+      shiftleft/scan:mp-rich scan --src /app \
       --out_dir /reports/CodeAnalysisLogs
   displayName: "Perform ShiftLeft Scan"
   continueOnError: "true"
