@@ -23,7 +23,7 @@ steps:
       -e "BRANCH=$(Build.SourceBranch)" \
       -v "$(Build.SourcesDirectory):/app" \
       -v "$(Build.ArtifactStagingDirectory):/reports" \
-      shiftleft/sast-scan scan --src /app \
+      shiftleft/sast-scan scan --src /app --type java,depscan \
       --out_dir /reports/CodeAnalysisLogs
   displayName: "Perform ShiftLeft Scan"
   continueOnError: "true"
