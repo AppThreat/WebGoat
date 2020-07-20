@@ -1,33 +1,15 @@
-trigger:
-- master
-- develop
-
 pool:
   vmImage: 'ubuntu-latest'
-
+container: shiftleft/sast-scan:latest
 steps:
-- task: Maven@3
-  inputs:
-    mavenPomFile: 'pom.xml'
-    mavenOptions: '-Xmx3072m'
-    javaHomeOption: 'JDKVersion'
-    jdkVersionOption: '1.11'
-    jdkArchitectureOption: 'x64'
-    publishJUnitResults: false
-    goals: 'compile'
-- script: |
-    docker run -e "WORKSPACE=https://github.com/AppThreat/WebGoat/blob/$(Build.SourceVersion)" \
-      -e "REPOSITORY_URL=$(Build.Repository.Uri)" \
-      -e "COMMIT_SHA=$(Build.SourceVersion)" \
-      -e "GITHUB_TOKEN=$(GITHUB_TOKEN)" \
-      -e "BRANCH=$(Build.SourceBranch)" \
-      -v "$(Build.SourcesDirectory):/app" \
-      -v "$(Build.ArtifactStagingDirectory):/reports" \
-      shiftleft/sast-scan scan --src /app --type java,depscan \
-      --out_dir /reports/CodeAnalysisLogs
-  displayName: "Perform ShiftLeft Scan"
+# This integrates ShiftLeft Scan with automatic build
+- script: scan --type java,depscan --build --out_dir $(Build.ArtifactStagingDirectory)/CodeAnalysisLogs
+  env:
+    WORKSPACE: https://github.com/AppThreat/WebGoat/blob/$(Build.SourceVersion)
+    GITHUB_TOKEN: $(GITHUB_TOKEN)      
+  displayName: "Perform ShiftLeft scan"
   continueOnError: "true"
-# To integrate with the ShiftLeft Scan Results Extension it is necessary to publish the CodeAnalysisLogs folder
+# To integrate with the ShiftLeft Scan Extension it is necessary to publish the CodeAnalysisLogs folder
 # as an artifact with the same name
 - task: PublishBuildArtifacts@1
   displayName: "Publish analysis logs"
