@@ -1,6 +1,6 @@
 pool:
   vmImage: 'ubuntu-latest'
-container: shiftleft/sast-scan:latest
+container: shiftleft/sast-scan:depscan-summary
 steps:
 # This integrates ShiftLeft Scan with automatic build
 - script: scan --type java,depscan --build --out_dir $(Build.ArtifactStagingDirectory)/CodeAnalysisLogs
