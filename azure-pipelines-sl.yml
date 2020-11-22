@@ -4,7 +4,7 @@ container: shiftleft/sast-scan:latest
 steps:
 # This integrates ShiftLeft Scan with automatic build
 - script: |
-    mvn dependency:get -DrepoUrl=https://jitpack.io -Dartifact=com.github.everit-org.json-schema:org.everit.json.schema:1.12.1 org.cyclonedx:cyclonedx-maven-plugin:2.1.0:makeAggregateBom
+    mvn dependency:get -DremoteRepositories=central::default::https://repo.maven.apache.org/maven2,jitpack::::https://jitpack.io -DrepoUrl=https://jitpack.io -Dartifact=com.github.everit-org.json-schema:org.everit.json.schema:1.12.1 org.cyclonedx:cyclonedx-maven-plugin:2.1.0:makeAggregateBom
     scan --type java,depscan --build --out_dir $(Build.ArtifactStagingDirectory)/CodeAnalysisLogs
   env:
     WORKSPACE: https://github.com/AppThreat/WebGoat/blob/$(Build.SourceVersion)
