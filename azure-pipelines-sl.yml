@@ -6,7 +6,8 @@ steps:
 - script: scan --type java,depscan --build --out_dir $(Build.ArtifactStagingDirectory)/CodeAnalysisLogs
   env:
     WORKSPACE: https://github.com/AppThreat/WebGoat/blob/$(Build.SourceVersion)
-    GITHUB_TOKEN: $(GITHUB_TOKEN)      
+    GITHUB_TOKEN: $(GITHUB_TOKEN)
+    SCAN_DEBUG_MODE: debug
   displayName: "Perform ShiftLeft scan"
   continueOnError: "true"
 # To integrate with the ShiftLeft Scan Extension it is necessary to publish the CodeAnalysisLogs folder
